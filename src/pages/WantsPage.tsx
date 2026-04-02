@@ -6,9 +6,11 @@ import {
   Heart, Target, Sparkle, DotsThree, PencilSimple, Trash, Copy, CheckCircle,
   Link as LinkIcon, Image as ImageIcon, MapPin, X, UploadSimple
 } from '@phosphor-icons/react'
+import { useIsMobile } from '@/hooks/use-mobile'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle, DrawerFooter } from '@/components/ui/drawer'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -35,6 +37,7 @@ import { handleImageUpload } from '@/lib/image-utils'
 import WantDetailDialog from '@/components/WantDetailDialog'
 
 export default function WantsPage() {
+  const isMobile = useIsMobile()
   const [wants, setWants] = useState<WantItem[]>([])
   const [filteredWants, setFilteredWants] = useState<WantItem[]>([])
   const [loading, setLoading] = useState(true)
@@ -563,15 +566,16 @@ export default function WantsPage() {
         </div>
       )}
 
-      <Dialog open={showAddDialog} onOpenChange={(open) => {
-        setShowAddDialog(open)
-        if (!open) resetForm()
-      }}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{editingWant ? 'Edit Want' : 'Add New Want'}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
+      {isMobile ? (
+        <Drawer open={showAddDialog} onOpenChange={(open) => {
+          setShowAddDialog(open)
+          if (!open) resetForm()
+        }}>
+          <DrawerContent className="max-h-[95vh]">
+            <DrawerHeader>
+              <DrawerTitle>{editingWant ? 'Edit Want' : 'Add New Want'}</DrawerTitle>
+            </DrawerHeader>
+            <div className="space-y-4 px-4 pb-4 overflow-y-auto flex-1">
             <div>
               <Label htmlFor="title">Title *</Label>
               <Input
@@ -801,17 +805,269 @@ export default function WantsPage() {
                 )}
               </div>
             </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => { setShowAddDialog(false); resetForm() }}>
-              Cancel
-            </Button>
-            <Button onClick={handleSubmit} className="bg-primary text-primary-foreground">
-              {editingWant ? 'Update' : 'Add'} Want
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            </div>
+            <DrawerFooter>
+              <Button onClick={handleSubmit} className="bg-primary text-primary-foreground">
+                {editingWant ? 'Update' : 'Add'} Want
+              </Button>
+              <Button variant="outline" onClick={() => { setShowAddDialog(false); resetForm() }}>
+                Cancel
+              </Button>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <Dialog open={showAddDialog} onOpenChange={(open) => {
+          setShowAddDialog(open)
+          if (!open) resetForm()
+        }}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>{editingWant ? 'Edit Want' : 'Add New Want'}</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              {/* Same form content as drawer */}
+              <div>
+                <Label htmlFor="title">Title *</Label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  placeholder="What do you want?"
+                />
+              </div>
+              <div>
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Describe your want in detail..."
+                  rows={3}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="category">Category</Label>
+                  <Select value={formData.category} onValueChange={(v) => setFormData({ ...formData, category: v as WantCategory })}>
+                    <SelectTrigger id="category">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {WANT_CATEGORIES.map(cat => (
+                        <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="status">Status</Label>
+                  <Select value={formData.status} onValueChange={(v) => setFormData({ ...formData, status: v as WantStatus })}>
+                    <SelectTrigger id="status">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {WANT_STATUSES.map(status => (
+                        <SelectItem key={status.value} value={status.value}>{status.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="priority">Priority</Label>
+                  <Select value={formData.priority} onValueChange={(v) => setFormData({ ...formData, priority: v as Priority })}>
+                    <SelectTrigger id="priority">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {PRIORITIES.map(p => (
+                        <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="cost">Estimated Cost</Label>
+                  <Input
+                    id="cost"
+                    type="number"
+                    value={formData.estimatedCost}
+                    onChange={(e) => setFormData({ ...formData, estimatedCost: e.target.value })}
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="targetDate">Target Date</Label>
+                <Input
+                  id="targetDate"
+                  type="date"
+                  value={formData.targetDate}
+                  onChange={(e) => setFormData({ ...formData, targetDate: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label htmlFor="why">Why It Matters</Label>
+                <Textarea
+                  id="why"
+                  value={formData.whyItMatters}
+                  onChange={(e) => setFormData({ ...formData, whyItMatters: e.target.value })}
+                  placeholder="Why is this important to you?"
+                  rows={2}
+                />
+              </div>
+              <div>
+                <Label className="flex items-center gap-2 mb-2">
+                  <ImageIcon size={16} />
+                  Image
+                </Label>
+                {formData.imageUrl ? (
+                  <div className="space-y-2">
+                    <div className="relative w-full h-48 rounded-lg overflow-hidden bg-muted border border-border">
+                      <img 
+                        src={formData.imageUrl} 
+                        alt="Preview" 
+                        className="w-full h-full object-cover"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        onClick={handleRemoveImage}
+                        className="absolute top-2 right-2"
+                      >
+                        <X size={16} />
+                      </Button>
+                    </div>
+                    <Input
+                      type="url"
+                      value={formData.imageUrl}
+                      onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                      placeholder="Or paste image URL..."
+                      className="text-sm"
+                    />
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileSelect}
+                        className="hidden"
+                        id="image-upload"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploadingImage}
+                        className="flex-1"
+                      >
+                        {uploadingImage ? (
+                          <>
+                            <div className="animate-spin mr-2 h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
+                            Uploading...
+                          </>
+                        ) : (
+                          <>
+                            <UploadSimple size={16} className="mr-2" />
+                            Upload Image
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t border-border" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-card px-2 text-muted-foreground">Or</span>
+                      </div>
+                    </div>
+                    <Input
+                      type="url"
+                      value={formData.imageUrl}
+                      onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                      placeholder="Paste image URL..."
+                    />
+                  </div>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="address" className="flex items-center gap-2">
+                  <MapPin size={16} />
+                  Address
+                </Label>
+                <Input
+                  id="address"
+                  value={formData.address}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  placeholder="Street, City, State, ZIP"
+                />
+              </div>
+              <div>
+                <Label className="flex items-center gap-2">
+                  <LinkIcon size={16} />
+                  Links
+                </Label>
+                <div className="space-y-2">
+                  <div className="flex gap-2">
+                    <Input
+                      value={formData.linkInput}
+                      onChange={(e) => setFormData({ ...formData, linkInput: e.target.value })}
+                      onKeyPress={handleLinkInputKeyPress}
+                      placeholder="https://example.com"
+                      type="url"
+                    />
+                    <Button
+                      type="button"
+                      onClick={handleAddLink}
+                      variant="outline"
+                      size="sm"
+                    >
+                      <Plus size={16} />
+                    </Button>
+                  </div>
+                  {formData.links.length > 0 && (
+                    <div className="space-y-1">
+                      {formData.links.map((link, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-2 text-sm bg-muted px-3 py-2 rounded"
+                        >
+                          <LinkIcon size={14} className="text-muted-foreground" />
+                          <span className="flex-1 truncate">{link}</span>
+                          <Button
+                            type="button"
+                            onClick={() => handleRemoveLink(index)}
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0"
+                          >
+                            <X size={14} />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => { setShowAddDialog(false); resetForm() }}>
+                Cancel
+              </Button>
+              <Button onClick={handleSubmit} className="bg-primary text-primary-foreground">
+                {editingWant ? 'Update' : 'Add'} Want
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
 
       <WantDetailDialog
         want={selectedWant}
