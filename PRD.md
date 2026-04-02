@@ -81,7 +81,7 @@ This application requires sophisticated features including AI provider abstracti
 
 ## Design Direction
 
-The design should evoke the feeling of a premium personal assistant—calm, sophisticated, aspirational, and intelligent. It should feel like opening a luxury journal or planning studio, not a task manager or shopping list. The aesthetic combines editorial design, high-end product cards, and ambient intelligence.
+The design should evoke the feeling of a premium personal assistant—calm, sophisticated, aspirational, and intelligent. It should feel like opening a luxury journal or planning studio, not a task manager or shopping list. The aesthetic combines editorial design, high-end product cards, and ambient intelligence with a modern, flat, and compact approach that emphasizes efficiency and clarity.
 
 ## Color Selection
 
@@ -180,12 +180,15 @@ Animations should feel smooth, purposeful, and premium—enhancing clarity and d
   - Eye: Eye for preview
 
 - **Spacing**:
-  - Section gaps: gap-8 (32px)
-  - Card grids: gap-6 (24px)
-  - Card internal: p-6 (24px)
-  - Form fields: gap-4 (16px)
-  - Inline elements: gap-2 (8px)
-  - Page margins: px-6 md:px-8 (24-32px)
+  - Section gaps: gap-4 (16px)
+  - Card grids: gap-3 (12px)
+  - Card internal: p-4 (16px)
+  - Form fields: gap-3 (12px)
+  - Inline elements: gap-1.5 (6px)
+  - Page margins: px-4 md:px-6 (16-24px)
+  - Compact border radius: 0.25rem (4px) throughout
+  - Reduced padding: Tighter spacing on all UI elements
+  - Flat aesthetic: Minimal shadows, no excessive blur effects
 
 - **Mobile**:
   - Sidebar → Bottom navigation bar (fixed)

@@ -41,13 +41,13 @@ function App() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="flex h-screen overflow-hidden">
-        <aside className="hidden md:flex w-64 flex-col border-r border-border bg-card/50 backdrop-blur-sm">
-          <div className="p-8">
-            <h1 className="text-3xl font-semibold tracking-tight text-primary">Wysh Lyst</h1>
-            <p className="text-sm text-muted-foreground mt-1">Your Future, Organized</p>
+        <aside className="hidden md:flex w-56 flex-col border-r border-border bg-card">
+          <div className="p-5 border-b border-border">
+            <h1 className="text-2xl font-semibold tracking-tight text-primary">Wysh Lyst</h1>
+            <p className="text-xs text-muted-foreground mt-0.5">Your Future, Organized</p>
           </div>
 
-          <nav className="flex-1 px-4 space-y-1">
+          <nav className="flex-1 px-3 py-3 space-y-0.5">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon
               const isActive = currentPage === item.id
@@ -56,27 +56,27 @@ function App() {
                   key={item.id}
                   onClick={() => setCurrentPage(item.id)}
                   className={`
-                    w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all
+                    w-full flex items-center gap-2.5 px-3 py-2 rounded transition-all text-sm
                     ${
                       isActive
-                        ? 'bg-primary/10 text-primary shadow-sm'
+                        ? 'bg-primary/10 text-primary'
                         : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                     }
                   `}
                 >
-                  <Icon size={20} weight={isActive ? 'fill' : 'regular'} />
+                  <Icon size={18} weight={isActive ? 'fill' : 'regular'} />
                   <span className="font-medium">{item.label}</span>
                 </button>
               )
             })}
           </nav>
 
-          <div className="p-4 border-t border-border">
-            <div className="p-4 bg-muted/30 rounded-xl space-y-2">
-              <p className="text-xs text-muted-foreground">
+          <div className="p-3 border-t border-border">
+            <div className="p-3 bg-muted/30 rounded space-y-1">
+              <p className="text-xs text-muted-foreground leading-tight">
                 Local-first & privacy-focused
               </p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground leading-tight">
                 All data stored on your device
               </p>
             </div>
@@ -93,8 +93,8 @@ function App() {
         </main>
       </div>
 
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-md border-t border-border">
-        <div className="flex justify-around items-center h-16 px-2">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border">
+        <div className="flex justify-around items-center h-14 px-2">
           {NAV_ITEMS.slice(0, 5).map((item) => {
             const Icon = item.icon
             const isActive = currentPage === item.id
@@ -103,11 +103,11 @@ function App() {
                 key={item.id}
                 onClick={() => setCurrentPage(item.id)}
                 className={`
-                  flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-all
+                  flex flex-col items-center justify-center gap-0.5 px-2 py-1.5 rounded transition-all
                   ${isActive ? 'text-primary' : 'text-muted-foreground'}
                 `}
               >
-                <Icon size={22} weight={isActive ? 'fill' : 'regular'} />
+                <Icon size={20} weight={isActive ? 'fill' : 'regular'} />
                 <span className="text-xs font-medium">{item.label}</span>
               </button>
             )
@@ -115,11 +115,11 @@ function App() {
           <button
             onClick={() => setCurrentPage('settings')}
             className={`
-              flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-all
+              flex flex-col items-center justify-center gap-0.5 px-2 py-1.5 rounded transition-all
               ${currentPage === 'settings' ? 'text-primary' : 'text-muted-foreground'}
             `}
           >
-            <Gear size={22} weight={currentPage === 'settings' ? 'fill' : 'regular'} />
+            <Gear size={20} weight={currentPage === 'settings' ? 'fill' : 'regular'} />
             <span className="text-xs font-medium">More</span>
           </button>
         </div>

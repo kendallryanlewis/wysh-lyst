@@ -292,13 +292,13 @@ export default function WantsPage() {
 
   if (loading) {
     return (
-      <div className="p-6 md:p-12 space-y-6">
-        <div className="animate-pulse space-y-4">
-          <div className="h-12 bg-muted rounded-xl w-1/3"></div>
-          <div className="h-10 bg-muted rounded-xl"></div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="p-4 md:p-6 space-y-4">
+        <div className="animate-pulse space-y-3">
+          <div className="h-10 bg-muted rounded w-1/3"></div>
+          <div className="h-9 bg-muted rounded"></div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {[1, 2, 3, 4, 5, 6].map(i => (
-              <div key={i} className="h-64 bg-muted rounded-2xl"></div>
+              <div key={i} className="h-52 bg-muted rounded"></div>
             ))}
           </div>
         </div>
@@ -307,35 +307,35 @@ export default function WantsPage() {
   }
 
   return (
-    <div className="p-6 md:p-12 space-y-6 max-w-7xl pb-24 md:pb-6">
+    <div className="p-4 md:p-6 space-y-4 max-w-7xl pb-20 md:pb-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-semibold mb-2">Wants</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-semibold mb-0.5">Wants</h1>
+          <p className="text-sm text-muted-foreground">
             {filteredWants.length} {filteredWants.length === 1 ? 'item' : 'items'}
           </p>
         </div>
-        <Button onClick={() => { resetForm(); setShowAddDialog(true) }} className="bg-primary text-primary-foreground">
-          <Plus size={20} className="mr-2" weight="bold" />
+        <Button onClick={() => { resetForm(); setShowAddDialog(true) }} size="sm" className="bg-primary text-primary-foreground">
+          <Plus size={18} className="mr-1.5" weight="bold" />
           Add Want
         </Button>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col md:flex-row gap-2">
         <div className="relative flex-1">
-          <MagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
+          <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
           <Input
             type="text"
             placeholder="Search wants..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-12 bg-card border-border"
+            className="pl-10 bg-card border-border h-9 text-sm"
           />
         </div>
         
         <div className="flex gap-2">
           <Select value={categoryFilter} onValueChange={(v) => setCategoryFilter(v as WantCategory | 'all')}>
-            <SelectTrigger className="w-40 bg-card">
+            <SelectTrigger className="w-36 bg-card h-9 text-sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -347,7 +347,7 @@ export default function WantsPage() {
           </Select>
 
           <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as WantStatus | 'all')}>
-            <SelectTrigger className="w-40 bg-card">
+            <SelectTrigger className="w-32 bg-card h-9 text-sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -359,7 +359,7 @@ export default function WantsPage() {
           </Select>
 
           <Select value={sortBy} onValueChange={(v) => setSortBy(v as any)}>
-            <SelectTrigger className="w-36 bg-card">
+            <SelectTrigger className="w-28 bg-card h-9 text-sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -370,43 +370,43 @@ export default function WantsPage() {
             </SelectContent>
           </Select>
 
-          <div className="flex bg-card rounded-lg border border-border p-1">
+          <div className="flex bg-card rounded border border-border p-0.5">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setView('grid')}
-              className={view === 'grid' ? 'bg-muted' : ''}
+              className={`h-8 px-2 ${view === 'grid' ? 'bg-muted' : ''}`}
             >
-              <SquaresFour size={20} />
+              <SquaresFour size={18} />
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setView('list')}
-              className={view === 'list' ? 'bg-muted' : ''}
+              className={`h-8 px-2 ${view === 'list' ? 'bg-muted' : ''}`}
             >
-              <ListBullets size={20} />
+              <ListBullets size={18} />
             </Button>
           </div>
         </div>
       </div>
 
       {filteredWants.length === 0 ? (
-        <Card className="p-12 text-center">
-          <div className="space-y-4">
-            <div className="mx-auto w-16 h-16 rounded-full bg-muted flex items-center justify-center">
-              <Heart size={32} className="text-muted-foreground" />
+        <Card className="p-8 text-center">
+          <div className="space-y-3">
+            <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center">
+              <Heart size={24} className="text-muted-foreground" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2">No wants found</h3>
-              <p className="text-muted-foreground mb-4">
+              <h3 className="text-base font-semibold mb-1">No wants found</h3>
+              <p className="text-sm text-muted-foreground mb-3">
                 {searchQuery || categoryFilter !== 'all' || statusFilter !== 'all'
                   ? 'Try adjusting your filters'
                   : 'Start by adding something you desire'}
               </p>
               {!searchQuery && categoryFilter === 'all' && statusFilter === 'all' && (
-                <Button onClick={() => { resetForm(); setShowAddDialog(true) }} className="bg-primary text-primary-foreground">
-                  <Plus size={20} className="mr-2" weight="bold" />
+                <Button onClick={() => { resetForm(); setShowAddDialog(true) }} size="sm" className="bg-primary text-primary-foreground">
+                  <Plus size={18} className="mr-1.5" weight="bold" />
                   Add Your First Want
                 </Button>
               )}
@@ -414,86 +414,86 @@ export default function WantsPage() {
           </div>
         </Card>
       ) : view === 'grid' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {filteredWants.map((want) => (
-            <Card key={want.id} className="p-6 hover:bg-muted/30 transition-all group relative cursor-pointer" onClick={() => handleWantClick(want)}>
-              <div className="space-y-4">
+            <Card key={want.id} className="p-4 hover:bg-muted/30 transition-all group relative cursor-pointer" onClick={() => handleWantClick(want)}>
+              <div className="space-y-2.5">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-lg mb-1 truncate">{want.title}</h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
+                    <h3 className="font-semibold text-sm mb-0.5 truncate">{want.title}</h3>
+                    <p className="text-xs text-muted-foreground line-clamp-2">
                       {want.description || 'No description'}
                     </p>
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100" onClick={(e) => e.stopPropagation()}>
-                        <DotsThree size={20} weight="bold" />
+                      <Button variant="ghost" size="sm" className="h-7 w-7 p-0 opacity-0 group-hover:opacity-100" onClick={(e) => e.stopPropagation()}>
+                        <DotsThree size={18} weight="bold" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={() => handleEdit(want)}>
-                        <PencilSimple size={16} className="mr-2" />
+                        <PencilSimple size={14} className="mr-2" />
                         Edit
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => handleDuplicate(want)}>
-                        <Copy size={16} className="mr-2" />
+                        <Copy size={14} className="mr-2" />
                         Duplicate
                       </DropdownMenuItem>
                       {want.status !== 'completed' && (
                         <DropdownMenuItem onClick={() => handleMarkComplete(want)}>
-                          <CheckCircle size={16} className="mr-2" />
+                          <CheckCircle size={14} className="mr-2" />
                           Mark Complete
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => handleDelete(want.id)} className="text-destructive">
-                        <Trash size={16} className="mr-2" />
+                        <Trash size={14} className="mr-2" />
                         Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
 
-                <div className="flex flex-wrap gap-2 text-sm">
-                  <span className={`px-2 py-1 rounded-lg bg-muted ${getStatusColor(want.status)}`}>
+                <div className="flex flex-wrap gap-1.5 text-xs">
+                  <span className={`px-2 py-0.5 rounded bg-muted ${getStatusColor(want.status)}`}>
                     {WANT_STATUSES.find(s => s.value === want.status)?.label}
                   </span>
-                  <span className={`px-2 py-1 rounded-lg bg-muted ${getPriorityColor(want.priority)}`}>
+                  <span className={`px-2 py-0.5 rounded bg-muted ${getPriorityColor(want.priority)}`}>
                     {PRIORITIES.find(p => p.value === want.priority)?.label}
                   </span>
                 </div>
 
                 {want.estimatedCost && (
-                  <p className="text-primary font-semibold text-lg">
+                  <p className="text-primary font-semibold text-sm">
                     {formatCurrency(want.estimatedCost)}
                   </p>
                 )}
 
                 {(want.imageUrl || want.address || (want.links && want.links.length > 0)) && (
-                  <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                  <div className="flex flex-wrap gap-1.5 text-xs text-muted-foreground">
                     {want.imageUrl && (
-                      <div className="flex items-center gap-1 px-2 py-1 bg-muted rounded">
-                        <ImageIcon size={12} />
+                      <div className="flex items-center gap-1 px-1.5 py-0.5 bg-muted rounded">
+                        <ImageIcon size={10} />
                         <span>Image</span>
                       </div>
                     )}
                     {want.address && (
-                      <div className="flex items-center gap-1 px-2 py-1 bg-muted rounded">
-                        <MapPin size={12} />
+                      <div className="flex items-center gap-1 px-1.5 py-0.5 bg-muted rounded">
+                        <MapPin size={10} />
                         <span>Address</span>
                       </div>
                     )}
                     {want.links && want.links.length > 0 && (
-                      <div className="flex items-center gap-1 px-2 py-1 bg-muted rounded">
-                        <LinkIcon size={12} />
+                      <div className="flex items-center gap-1 px-1.5 py-0.5 bg-muted rounded">
+                        <LinkIcon size={10} />
                         <span>{want.links.length} link{want.links.length > 1 ? 's' : ''}</span>
                       </div>
                     )}
                   </div>
                 )}
 
-                <div className="flex items-center justify-between text-sm text-muted-foreground pt-2 border-t border-border">
+                <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t border-border">
                   <span className="capitalize">{want.category.replace('_', ' ')}</span>
                   <span>{formatRelativeTime(want.createdAt)}</span>
                 </div>

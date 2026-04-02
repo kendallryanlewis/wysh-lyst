@@ -38,7 +38,7 @@ export default function WantDetailDialog({ want, open, onOpenChange }: WantDetai
       <ScrollArea className="h-screen">
         <div className="relative">
           {want.imageUrl && (
-            <div className="relative w-full h-[50vh] min-h-[400px] bg-muted">
+            <div className="relative w-full h-[40vh] min-h-[300px] bg-muted">
               <img
                 src={want.imageUrl}
                 alt={want.title}
@@ -49,49 +49,49 @@ export default function WantDetailDialog({ want, open, onOpenChange }: WantDetai
                 variant="ghost"
                 size="icon"
                 onClick={() => onOpenChange(false)}
-                className="absolute top-6 right-6 bg-background/90 backdrop-blur-md hover:bg-background shadow-lg w-12 h-12 rounded-full"
+                className="absolute top-4 right-4 bg-background/90 hover:bg-background w-9 h-9 rounded"
               >
-                <X size={24} weight="bold" />
+                <X size={20} weight="bold" />
               </Button>
             </div>
           )}
           
-          <div className="max-w-5xl mx-auto px-6 md:px-12 pb-24">
+          <div className="max-w-5xl mx-auto px-4 md:px-6 pb-20">
             {!want.imageUrl && (
-              <div className="flex items-center justify-end pt-6 pb-4">
+              <div className="flex items-center justify-end pt-4 pb-3">
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => onOpenChange(false)}
-                  className="w-12 h-12 rounded-full"
+                  className="w-9 h-9 rounded"
                 >
-                  <X size={24} weight="bold" />
+                  <X size={20} weight="bold" />
                 </Button>
               </div>
             )}
 
-            <div className="space-y-8 py-8">
-              <div className="space-y-6">
-                <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
-                    <Heart size={32} className="text-primary" weight="fill" />
+            <div className="space-y-4 py-4">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-12 h-12 rounded bg-primary/10 flex items-center justify-center">
+                    <Heart size={24} className="text-primary" weight="fill" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4">{want.title}</h1>
-                    <div className="flex flex-wrap gap-2">
+                    <h1 className="text-2xl md:text-3xl font-bold mb-2">{want.title}</h1>
+                    <div className="flex flex-wrap gap-1.5">
                       {statusInfo && (
-                        <Badge variant="outline" className={`${statusInfo.color} bg-muted border-none px-3 py-1 text-sm`}>
+                        <Badge variant="outline" className={`${statusInfo.color} bg-muted border-none px-2 py-0.5 text-xs`}>
                           {statusInfo.label}
                         </Badge>
                       )}
                       {priorityInfo && (
-                        <Badge variant="outline" className={`${priorityInfo.color} bg-muted border-none px-3 py-1 text-sm`}>
+                        <Badge variant="outline" className={`${priorityInfo.color} bg-muted border-none px-2 py-0.5 text-xs`}>
                           {priorityInfo.label} Priority
                         </Badge>
                       )}
                       {categoryInfo && (
-                        <Badge variant="outline" className="bg-muted border-none px-3 py-1 text-sm">
-                          <Package size={14} className="mr-1" weight="bold" />
+                        <Badge variant="outline" className="bg-muted border-none px-2 py-0.5 text-xs">
+                          <Package size={12} className="mr-1" weight="bold" />
                           {categoryInfo.label}
                         </Badge>
                       )}
@@ -100,52 +100,52 @@ export default function WantDetailDialog({ want, open, onOpenChange }: WantDetai
                 </div>
 
                 {want.description && (
-                  <div className="space-y-3 bg-card p-6 rounded-2xl border border-border">
+                  <div className="space-y-2 bg-card p-4 rounded border border-border">
                     <div className="flex items-center gap-2">
-                      <Note size={20} weight="bold" className="text-muted-foreground" />
-                      <h2 className="text-lg font-semibold">Description</h2>
+                      <Note size={18} weight="bold" className="text-muted-foreground" />
+                      <h2 className="text-sm font-semibold">Description</h2>
                     </div>
-                    <p className="text-foreground/90 leading-relaxed text-lg">{want.description}</p>
+                    <p className="text-foreground/90 leading-relaxed text-sm">{want.description}</p>
                   </div>
                 )}
 
                 {want.whyItMatters && (
-                  <div className="space-y-3 p-6 rounded-2xl bg-accent/10 border border-accent/30">
+                  <div className="space-y-2 p-4 rounded bg-accent/10 border border-accent/30">
                     <div className="flex items-center gap-2 text-accent">
-                      <Sparkle size={20} weight="fill" />
-                      <h2 className="text-lg font-semibold">Why It Matters</h2>
+                      <Sparkle size={18} weight="fill" />
+                      <h2 className="text-sm font-semibold">Why It Matters</h2>
                     </div>
-                    <p className="text-foreground/90 leading-relaxed text-lg">{want.whyItMatters}</p>
+                    <p className="text-foreground/90 leading-relaxed text-sm">{want.whyItMatters}</p>
                   </div>
                 )}
               </div>
 
-              <Separator className="my-8" />
+              <Separator className="my-4" />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {want.estimatedCost !== undefined && (
-                  <div className="space-y-3 p-6 rounded-2xl bg-card border border-border">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <CurrencyDollar size={24} className="text-primary" weight="bold" />
+                  <div className="space-y-2 p-3 rounded bg-card border border-border">
+                    <div className="flex items-center gap-2">
+                      <div className="w-9 h-9 rounded bg-primary/10 flex items-center justify-center">
+                        <CurrencyDollar size={20} className="text-primary" weight="bold" />
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm text-muted-foreground mb-1">Estimated Cost</p>
-                        <p className="text-2xl font-bold text-primary">{formatCurrency(want.estimatedCost)}</p>
+                        <p className="text-xs text-muted-foreground mb-0.5">Estimated Cost</p>
+                        <p className="text-lg font-bold text-primary">{formatCurrency(want.estimatedCost)}</p>
                       </div>
                     </div>
                   </div>
                 )}
 
                 {want.targetDate && (
-                  <div className="space-y-3 p-6 rounded-2xl bg-card border border-border">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center">
-                        <CalendarBlank size={24} className="text-secondary" weight="bold" />
+                  <div className="space-y-2 p-3 rounded bg-card border border-border">
+                    <div className="flex items-center gap-2">
+                      <div className="w-9 h-9 rounded bg-secondary/10 flex items-center justify-center">
+                        <CalendarBlank size={20} className="text-secondary" weight="bold" />
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm text-muted-foreground mb-1">Target Date</p>
-                        <p className="text-lg font-semibold">
+                        <p className="text-xs text-muted-foreground mb-0.5">Target Date</p>
+                        <p className="text-sm font-semibold">
                           {new Date(want.targetDate).toLocaleDateString('en-US', {
                             month: 'long',
                             day: 'numeric',
@@ -157,15 +157,15 @@ export default function WantDetailDialog({ want, open, onOpenChange }: WantDetai
                   </div>
                 )}
 
-                <div className="space-y-3 p-6 rounded-2xl bg-card border border-border">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
-                      <Clock size={24} className="text-muted-foreground" weight="bold" />
+                <div className="space-y-2 p-3 rounded bg-card border border-border">
+                  <div className="flex items-center gap-2">
+                    <div className="w-9 h-9 rounded bg-muted flex items-center justify-center">
+                      <Clock size={20} className="text-muted-foreground" weight="bold" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-muted-foreground mb-1">Created</p>
-                      <p className="text-lg font-semibold">{formatRelativeTime(want.createdAt)}</p>
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-xs text-muted-foreground mb-0.5">Created</p>
+                      <p className="text-sm font-semibold">{formatRelativeTime(want.createdAt)}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
                         {new Date(want.createdAt).toLocaleDateString('en-US', {
                           month: 'short',
                           day: 'numeric',
@@ -179,21 +179,21 @@ export default function WantDetailDialog({ want, open, onOpenChange }: WantDetai
                 </div>
 
                 {want.progressPercent > 0 && (
-                  <div className="space-y-3 p-6 rounded-2xl bg-card border border-border md:col-span-2 lg:col-span-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
-                        <Target size={24} className="text-accent" weight="bold" />
+                  <div className="space-y-2 p-3 rounded bg-card border border-border md:col-span-2 lg:col-span-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-9 h-9 rounded bg-accent/10 flex items-center justify-center">
+                        <Target size={20} className="text-accent" weight="bold" />
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm text-muted-foreground mb-3">Progress</p>
-                        <div className="flex items-center gap-4">
-                          <div className="flex-1 h-3 bg-muted rounded-full overflow-hidden">
+                        <p className="text-xs text-muted-foreground mb-2">Progress</p>
+                        <div className="flex items-center gap-3">
+                          <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                             <div
                               className="h-full bg-accent rounded-full transition-all"
                               style={{ width: `${want.progressPercent}%` }}
                             />
                           </div>
-                          <span className="text-xl font-bold text-accent">{want.progressPercent}%</span>
+                          <span className="text-base font-bold text-accent">{want.progressPercent}%</span>
                         </div>
                       </div>
                     </div>
@@ -201,14 +201,14 @@ export default function WantDetailDialog({ want, open, onOpenChange }: WantDetai
                 )}
 
                 {want.completedAt && (
-                  <div className="space-y-3 p-6 rounded-2xl bg-green-500/10 border border-green-500/30">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
-                        <CheckCircle size={24} className="text-green-500" weight="fill" />
+                  <div className="space-y-2 p-3 rounded bg-green-500/10 border border-green-500/30">
+                    <div className="flex items-center gap-2">
+                      <div className="w-9 h-9 rounded bg-green-500/20 flex items-center justify-center">
+                        <CheckCircle size={20} className="text-green-500" weight="fill" />
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm text-green-600 dark:text-green-400 mb-1 font-semibold">Completed</p>
-                        <p className="text-lg font-semibold">
+                        <p className="text-xs text-green-600 dark:text-green-400 mb-0.5 font-semibold">Completed</p>
+                        <p className="text-sm font-semibold">
                           {new Date(want.completedAt).toLocaleDateString('en-US', {
                             month: 'long',
                             day: 'numeric',
@@ -223,17 +223,17 @@ export default function WantDetailDialog({ want, open, onOpenChange }: WantDetai
 
               {want.address && (
                 <>
-                  <Separator className="my-8" />
-                  <div className="space-y-4 p-6 rounded-2xl bg-card border border-border">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <MapPin size={24} weight="bold" className="text-primary" />
+                  <Separator className="my-4" />
+                  <div className="space-y-2 p-4 rounded bg-card border border-border">
+                    <div className="flex items-center gap-2">
+                      <div className="w-9 h-9 rounded bg-primary/10 flex items-center justify-center">
+                        <MapPin size={20} weight="bold" className="text-primary" />
                       </div>
-                      <h2 className="text-xl font-semibold">Location</h2>
+                      <h2 className="text-base font-semibold">Location</h2>
                     </div>
-                    <p className="text-foreground/90 text-lg pl-[60px]">{want.address}</p>
+                    <p className="text-foreground/90 text-sm pl-11">{want.address}</p>
                     {want.locationLabel && (
-                      <p className="text-sm text-muted-foreground pl-[60px]">
+                      <p className="text-xs text-muted-foreground pl-11">
                         Label: {want.locationLabel}
                       </p>
                     )}
@@ -243,11 +243,11 @@ export default function WantDetailDialog({ want, open, onOpenChange }: WantDetai
 
               {want.sourceLink && (
                 <>
-                  <Separator className="my-8" />
-                  <div className="space-y-4 p-6 rounded-2xl bg-card border border-border">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <LinkIcon size={24} weight="bold" className="text-primary" />
+                  <Separator className="my-4" />
+                  <div className="space-y-2 p-4 rounded bg-card border border-border">
+                    <div className="flex items-center gap-2">
+                      <div className="w-9 h-9 rounded bg-primary/10 flex items-center justify-center">
+                        <LinkIcon size={20} weight="bold" className="text-primary" />
                       </div>
                       <h2 className="text-xl font-semibold">Source Link</h2>
                     </div>

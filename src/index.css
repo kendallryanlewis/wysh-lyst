@@ -44,7 +44,7 @@
   --input: oklch(0.32 0.015 240);
   --ring: oklch(0.75 0.02 90);
   
-  --radius: 0.5rem;
+  --radius: 0.25rem;
   
   --font-sans: Barlow;
 }
