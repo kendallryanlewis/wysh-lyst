@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { db } from '@/lib/db'
 import type { WantItem, WantCategory, WantStatus, Priority } from '@/types'
 import { 
   Plus, MagnifyingGlass, Funnel, SquaresFour, ListBullets, 
   Heart, Target, Sparkle, DotsThree, PencilSimple, Trash, Copy, CheckCircle,
-  Link as LinkIcon, Image as ImageIcon, MapPin, X
+  Link as LinkIcon, Image as ImageIcon, MapPin, X, UploadSimple
 } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -31,6 +31,7 @@ import {
   filterWants,
   sortWants
 } from '@/lib/utils-wants'
+import { handleImageUpload } from '@/lib/image-utils'
 
 export default function WantsPage() {
   const [wants, setWants] = useState<WantItem[]>([])
@@ -43,6 +44,8 @@ export default function WantsPage() {
   const [categoryFilter, setCategoryFilter] = useState<WantCategory | 'all'>('all')
   const [statusFilter, setStatusFilter] = useState<WantStatus | 'all'>('all')
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'priority' | 'cost'>('newest')
+  const [uploadingImage, setUploadingImage] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [formData, setFormData] = useState({
     title: '',
@@ -250,6 +253,33 @@ export default function WantsPage() {
       e.preventDefault()
       handleAddLink()
     }
+  }
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setUploadingImage(true)
+    try {
+      const result = await handleImageUpload(file)
+      if (result.success && result.data) {
+        setFormData({ ...formData, imageUrl: result.data })
+        toast.success('Image uploaded successfully')
+      } else {
+        toast.error(result.error || 'Failed to upload image')
+      }
+    } catch (error) {
+      toast.error('Failed to process image')
+    } finally {
+      setUploadingImage(false)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
+
+  const handleRemoveImage = () => {
+    setFormData({ ...formData, imageUrl: '' })
   }
 
   if (loading) {
@@ -626,17 +656,83 @@ export default function WantsPage() {
               />
             </div>
             <div>
-              <Label htmlFor="imageUrl" className="flex items-center gap-2">
+              <Label className="flex items-center gap-2 mb-2">
                 <ImageIcon size={16} />
-                Image URL
+                Image
               </Label>
-              <Input
-                id="imageUrl"
-                type="url"
-                value={formData.imageUrl}
-                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                placeholder="https://example.com/image.jpg"
-              />
+              {formData.imageUrl ? (
+                <div className="space-y-2">
+                  <div className="relative w-full h-48 rounded-lg overflow-hidden bg-muted border border-border">
+                    <img 
+                      src={formData.imageUrl} 
+                      alt="Preview" 
+                      className="w-full h-full object-cover"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      onClick={handleRemoveImage}
+                      className="absolute top-2 right-2"
+                    >
+                      <X size={16} />
+                    </Button>
+                  </div>
+                  <Input
+                    type="url"
+                    value={formData.imageUrl}
+                    onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                    placeholder="Or paste image URL..."
+                    className="text-sm"
+                  />
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <div className="flex gap-2">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileSelect}
+                      className="hidden"
+                      id="image-upload"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploadingImage}
+                      className="flex-1"
+                    >
+                      {uploadingImage ? (
+                        <>
+                          <div className="animate-spin mr-2 h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
+                          Uploading...
+                        </>
+                      ) : (
+                        <>
+                          <UploadSimple size={16} className="mr-2" />
+                          Upload Image
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-border" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-card px-2 text-muted-foreground">Or</span>
+                    </div>
+                  </div>
+                  <Input
+                    type="url"
+                    value={formData.imageUrl}
+                    onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                    placeholder="Paste image URL..."
+                  />
+                </div>
+              )}
             </div>
             <div>
               <Label htmlFor="address" className="flex items-center gap-2">
