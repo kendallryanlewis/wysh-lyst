@@ -318,7 +318,7 @@ export default function WantsPage() {
     }
   }
 
-  const handleLinkedItemClick = async (wantId: string) => {
+  const handleLinkedItemClick = (wantId: string) => {
     const linkedWant = wants.find(w => w.id === wantId)
     if (linkedWant) {
       setSelectedWant(linkedWant)
