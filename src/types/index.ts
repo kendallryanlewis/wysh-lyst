@@ -38,6 +38,8 @@ export interface WantItem {
   notes?: string
   imageUrl?: string
   sourceLink?: string
+  links?: string[]
+  address?: string
   locationLabel?: string
   whyItMatters?: string
   moodTags: string[]

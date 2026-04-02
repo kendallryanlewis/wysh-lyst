@@ -3,7 +3,8 @@ import { db } from '@/lib/db'
 import type { WantItem, WantCategory, WantStatus, Priority } from '@/types'
 import { 
   Plus, MagnifyingGlass, Funnel, SquaresFour, ListBullets, 
-  Heart, Target, Sparkle, DotsThree, PencilSimple, Trash, Copy, CheckCircle
+  Heart, Target, Sparkle, DotsThree, PencilSimple, Trash, Copy, CheckCircle,
+  Link as LinkIcon, Image as ImageIcon, MapPin, X
 } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -52,6 +53,10 @@ export default function WantsPage() {
     estimatedCost: '',
     targetDate: '',
     whyItMatters: '',
+    imageUrl: '',
+    address: '',
+    links: [] as string[],
+    linkInput: '',
   })
 
   useEffect(() => {
@@ -94,6 +99,10 @@ export default function WantsPage() {
       estimatedCost: '',
       targetDate: '',
       whyItMatters: '',
+      imageUrl: '',
+      address: '',
+      links: [],
+      linkInput: '',
     })
     setEditingWant(null)
   }
@@ -114,6 +123,9 @@ export default function WantsPage() {
       estimatedCost: formData.estimatedCost ? parseFloat(formData.estimatedCost) : undefined,
       targetDate: formData.targetDate || undefined,
       whyItMatters: formData.whyItMatters,
+      imageUrl: formData.imageUrl || undefined,
+      address: formData.address || undefined,
+      links: formData.links.length > 0 ? formData.links : undefined,
       updatedAt: new Date().toISOString(),
     } : {
       id: generateId(),
@@ -125,6 +137,9 @@ export default function WantsPage() {
       estimatedCost: formData.estimatedCost ? parseFloat(formData.estimatedCost) : undefined,
       targetDate: formData.targetDate || undefined,
       whyItMatters: formData.whyItMatters,
+      imageUrl: formData.imageUrl || undefined,
+      address: formData.address || undefined,
+      links: formData.links.length > 0 ? formData.links : undefined,
       tags: [],
       moodTags: [],
       progressPercent: 0,
@@ -155,6 +170,10 @@ export default function WantsPage() {
       estimatedCost: want.estimatedCost?.toString() || '',
       targetDate: want.targetDate || '',
       whyItMatters: want.whyItMatters || '',
+      imageUrl: want.imageUrl || '',
+      address: want.address || '',
+      links: want.links || [],
+      linkInput: '',
     })
     setShowAddDialog(true)
   }
@@ -213,6 +232,24 @@ export default function WantsPage() {
 
   const getPriorityColor = (priority: Priority) => {
     return PRIORITIES.find(p => p.value === priority)?.color || 'text-gray-400'
+  }
+
+  const handleAddLink = () => {
+    const trimmedLink = formData.linkInput.trim()
+    if (trimmedLink && !formData.links.includes(trimmedLink)) {
+      setFormData({ ...formData, links: [...formData.links, trimmedLink], linkInput: '' })
+    }
+  }
+
+  const handleRemoveLink = (index: number) => {
+    setFormData({ ...formData, links: formData.links.filter((_, i) => i !== index) })
+  }
+
+  const handleLinkInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleAddLink()
+    }
   }
 
   if (loading) {
@@ -395,6 +432,29 @@ export default function WantsPage() {
                   </p>
                 )}
 
+                {(want.imageUrl || want.address || (want.links && want.links.length > 0)) && (
+                  <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                    {want.imageUrl && (
+                      <div className="flex items-center gap-1 px-2 py-1 bg-muted rounded">
+                        <ImageIcon size={12} />
+                        <span>Image</span>
+                      </div>
+                    )}
+                    {want.address && (
+                      <div className="flex items-center gap-1 px-2 py-1 bg-muted rounded">
+                        <MapPin size={12} />
+                        <span>Address</span>
+                      </div>
+                    )}
+                    {want.links && want.links.length > 0 && (
+                      <div className="flex items-center gap-1 px-2 py-1 bg-muted rounded">
+                        <LinkIcon size={12} />
+                        <span>{want.links.length} link{want.links.length > 1 ? 's' : ''}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between text-sm text-muted-foreground pt-2 border-t border-border">
                   <span className="capitalize">{want.category.replace('_', ' ')}</span>
                   <span>{formatRelativeTime(want.createdAt)}</span>
@@ -564,6 +624,78 @@ export default function WantsPage() {
                 placeholder="Why is this important to you?"
                 rows={2}
               />
+            </div>
+            <div>
+              <Label htmlFor="imageUrl" className="flex items-center gap-2">
+                <ImageIcon size={16} />
+                Image URL
+              </Label>
+              <Input
+                id="imageUrl"
+                type="url"
+                value={formData.imageUrl}
+                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                placeholder="https://example.com/image.jpg"
+              />
+            </div>
+            <div>
+              <Label htmlFor="address" className="flex items-center gap-2">
+                <MapPin size={16} />
+                Address
+              </Label>
+              <Input
+                id="address"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                placeholder="Street, City, State, ZIP"
+              />
+            </div>
+            <div>
+              <Label className="flex items-center gap-2">
+                <LinkIcon size={16} />
+                Links
+              </Label>
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  <Input
+                    value={formData.linkInput}
+                    onChange={(e) => setFormData({ ...formData, linkInput: e.target.value })}
+                    onKeyPress={handleLinkInputKeyPress}
+                    placeholder="https://example.com"
+                    type="url"
+                  />
+                  <Button
+                    type="button"
+                    onClick={handleAddLink}
+                    variant="outline"
+                    size="sm"
+                  >
+                    <Plus size={16} />
+                  </Button>
+                </div>
+                {formData.links.length > 0 && (
+                  <div className="space-y-1">
+                    {formData.links.map((link, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 text-sm bg-muted px-3 py-2 rounded"
+                      >
+                        <LinkIcon size={14} className="text-muted-foreground" />
+                        <span className="flex-1 truncate">{link}</span>
+                        <Button
+                          type="button"
+                          onClick={() => handleRemoveLink(index)}
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0"
+                        >
+                          <X size={14} />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <DialogFooter>
