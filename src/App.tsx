@@ -22,10 +22,31 @@ const NAV_ITEMS = [
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
   const [dbInitialized, setDbInitialized] = useState(false)
+  const [initError, setInitError] = useState<string | null>(null)
 
   useEffect(() => {
-    db.init().then(() => setDbInitialized(true))
+    db
+      .init()
+      .then(() => setDbInitialized(true))
+      .catch((error) => {
+        const message = error instanceof Error ? error.message : 'Unknown initialization error'
+        setInitError(message)
+      })
   }, [])
+
+  if (initError) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <div className="max-w-xl rounded-lg border border-destructive/40 bg-card p-6 space-y-3">
+          <h2 className="text-lg font-semibold text-destructive">App failed to initialize</h2>
+          <p className="text-sm text-muted-foreground">
+            Wysh Lyst could not start local storage in this browser context.
+          </p>
+          <pre className="text-xs bg-muted/50 border rounded p-3 overflow-auto">{initError}</pre>
+        </div>
+      </div>
+    )
+  }
 
   if (!dbInitialized) {
     return (

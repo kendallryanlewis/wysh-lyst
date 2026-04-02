@@ -12,7 +12,38 @@
 </head>
 
 <body>
+        <div id="boot-fallback" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#0f172a;color:#e2e8f0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;">
+                <div style="max-width:680px;width:100%;background:#111827;border:1px solid #334155;border-radius:12px;padding:20px;line-height:1.5;">
+                        <h1 style="margin:0 0 8px 0;font-size:20px;">Wysh Lyst is starting...</h1>
+                        <p style="margin:0 0 12px 0;color:#cbd5e1;">If this message does not disappear, GitHub may be serving the repository source page instead of the built app.</p>
+                        <p style="margin:0;color:#93c5fd;">Open the app URL: <a href="https://kendallryanlewis.github.io/wysh-lyst/" style="color:#93c5fd;">https://kendallryanlewis.github.io/wysh-lyst/</a></p>
+                </div>
+        </div>
     <div id="root"></div>
+        <script>
+            (function () {
+                const fallback = document.getElementById('boot-fallback');
+                const root = document.getElementById('root');
+                if (!fallback || !root) return;
+
+                const hideFallbackIfMounted = () => {
+                    if (root.childElementCount > 0) {
+                        fallback.style.display = 'none';
+                        return true;
+                    }
+                    return false;
+                };
+
+                if (hideFallbackIfMounted()) return;
+                const interval = setInterval(() => {
+                    if (hideFallbackIfMounted()) {
+                        clearInterval(interval);
+                    }
+                }, 250);
+
+                setTimeout(() => clearInterval(interval), 10000);
+            })();
+        </script>
     <script type="module" src="/src/main.tsx"></script>
 </body>
 
