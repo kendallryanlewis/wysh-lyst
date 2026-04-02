@@ -32,6 +32,7 @@ import {
   sortWants
 } from '@/lib/utils-wants'
 import { handleImageUpload } from '@/lib/image-utils'
+import WantDetailDialog from '@/components/WantDetailDialog'
 
 export default function WantsPage() {
   const [wants, setWants] = useState<WantItem[]>([])
@@ -45,6 +46,8 @@ export default function WantsPage() {
   const [statusFilter, setStatusFilter] = useState<WantStatus | 'all'>('all')
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'priority' | 'cost'>('newest')
   const [uploadingImage, setUploadingImage] = useState(false)
+  const [selectedWant, setSelectedWant] = useState<WantItem | null>(null)
+  const [showDetailDialog, setShowDetailDialog] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [formData, setFormData] = useState({
@@ -282,6 +285,11 @@ export default function WantsPage() {
     setFormData({ ...formData, imageUrl: '' })
   }
 
+  const handleWantClick = (want: WantItem) => {
+    setSelectedWant(want)
+    setShowDetailDialog(true)
+  }
+
   if (loading) {
     return (
       <div className="p-6 md:p-12 space-y-6">
@@ -408,7 +416,7 @@ export default function WantsPage() {
       ) : view === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredWants.map((want) => (
-            <Card key={want.id} className="p-6 hover:bg-muted/30 transition-all group relative">
+            <Card key={want.id} className="p-6 hover:bg-muted/30 transition-all group relative cursor-pointer" onClick={() => handleWantClick(want)}>
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">
@@ -419,7 +427,7 @@ export default function WantsPage() {
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100">
+                      <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100" onClick={(e) => e.stopPropagation()}>
                         <DotsThree size={20} weight="bold" />
                       </Button>
                     </DropdownMenuTrigger>
@@ -496,7 +504,7 @@ export default function WantsPage() {
       ) : (
         <div className="space-y-2">
           {filteredWants.map((want) => (
-            <Card key={want.id} className="p-4 hover:bg-muted/30 transition-all group">
+            <Card key={want.id} className="p-4 hover:bg-muted/30 transition-all group cursor-pointer" onClick={() => handleWantClick(want)}>
               <div className="flex items-center gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
@@ -522,7 +530,7 @@ export default function WantsPage() {
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={(e) => e.stopPropagation()}>
                         <DotsThree size={20} weight="bold" />
                       </Button>
                     </DropdownMenuTrigger>
@@ -804,6 +812,12 @@ export default function WantsPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <WantDetailDialog
+        want={selectedWant}
+        open={showDetailDialog}
+        onOpenChange={setShowDetailDialog}
+      />
     </div>
   )
 }
