@@ -21,3 +21,24 @@ https://kendallryanlewis.github.io/wysh-lyst/
 3. Under Build and deployment, set Source to GitHub Actions.
 
 After that, push to `main` and wait for the Deploy to GitHub Pages workflow to finish.
+
+## Auto Push (Optional)
+
+If you want local changes to be auto-committed and pushed on a timer:
+
+```bash
+npm run auto-push
+```
+
+Optional environment variables:
+
+- `AUTO_PUSH_INTERVAL` (seconds, default: `30`)
+- `AUTO_PUSH_MESSAGE_PREFIX` (default: `chore(auto)`)
+
+Example:
+
+```bash
+AUTO_PUSH_INTERVAL=15 AUTO_PUSH_MESSAGE_PREFIX="chore(sync)" npm run auto-push
+```
+
+Press `Ctrl+C` to stop the auto-push loop.
