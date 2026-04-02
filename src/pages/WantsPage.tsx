@@ -327,13 +327,13 @@ export default function WantsPage() {
 
   if (loading) {
     return (
-      <div className="p-4 md:p-6 space-y-4">
-        <div className="animate-pulse space-y-3">
-          <div className="h-10 bg-muted rounded w-1/3"></div>
-          <div className="h-9 bg-muted rounded"></div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div className="p-6 md:p-10 lg:p-12 space-y-6">
+        <div className="animate-pulse space-y-6">
+          <div className="h-12 bg-muted rounded w-1/3"></div>
+          <div className="h-12 bg-muted rounded"></div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map(i => (
-              <div key={i} className="h-52 bg-muted rounded"></div>
+              <div key={i} className="h-64 bg-muted rounded"></div>
             ))}
           </div>
         </div>
@@ -342,35 +342,35 @@ export default function WantsPage() {
   }
 
   return (
-    <div className="p-4 md:p-6 space-y-4 max-w-7xl pb-24 md:pb-4">
+    <div className="p-6 md:p-10 lg:p-12 space-y-8 max-w-7xl pb-32 md:pb-12">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-semibold mb-0.5">Wants</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-medium mb-2">Wants</h1>
+          <p className="text-base text-muted-foreground leading-relaxed">
             {filteredWants.length} {filteredWants.length === 1 ? 'item' : 'items'}
           </p>
         </div>
-        <Button onClick={() => { resetForm(); setShowAddDialog(true) }} size="sm" className="bg-primary text-primary-foreground">
-          <Plus size={18} className="mr-1.5" weight="bold" />
+        <Button onClick={() => { resetForm(); setShowAddDialog(true) }} size="lg" className="bg-primary text-primary-foreground px-6 py-6 text-base">
+          <Plus size={22} className="mr-2" weight="bold" />
           Add Want
         </Button>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-2">
+      <div className="flex flex-col md:flex-row gap-4">
         <div className="relative flex-1">
-          <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+          <MagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
           <Input
             type="text"
             placeholder="Search wants..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-card border-border h-9 text-sm"
+            className="pl-12 bg-card border-border h-12 text-base"
           />
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <Select value={categoryFilter} onValueChange={(v) => setCategoryFilter(v as WantCategory | 'all')}>
-            <SelectTrigger className="w-36 bg-card h-9 text-sm">
+            <SelectTrigger className="w-44 bg-card h-12 text-base">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -382,7 +382,7 @@ export default function WantsPage() {
           </Select>
 
           <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as WantStatus | 'all')}>
-            <SelectTrigger className="w-32 bg-card h-9 text-sm">
+            <SelectTrigger className="w-40 bg-card h-12 text-base">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -394,7 +394,7 @@ export default function WantsPage() {
           </Select>
 
           <Select value={sortBy} onValueChange={(v) => setSortBy(v as any)}>
-            <SelectTrigger className="w-28 bg-card h-9 text-sm">
+            <SelectTrigger className="w-36 bg-card h-12 text-base">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -405,43 +405,43 @@ export default function WantsPage() {
             </SelectContent>
           </Select>
 
-          <div className="flex bg-card rounded border border-border p-0.5">
+          <div className="flex bg-card rounded border border-border p-1">
             <Button
               variant="ghost"
-              size="sm"
+              size="lg"
               onClick={() => setView('grid')}
-              className={`h-8 px-2 ${view === 'grid' ? 'bg-muted' : ''}`}
+              className={`h-10 px-4 ${view === 'grid' ? 'bg-muted' : ''}`}
             >
-              <SquaresFour size={18} />
+              <SquaresFour size={22} />
             </Button>
             <Button
               variant="ghost"
-              size="sm"
+              size="lg"
               onClick={() => setView('list')}
-              className={`h-8 px-2 ${view === 'list' ? 'bg-muted' : ''}`}
+              className={`h-10 px-4 ${view === 'list' ? 'bg-muted' : ''}`}
             >
-              <ListBullets size={18} />
+              <ListBullets size={22} />
             </Button>
           </div>
         </div>
       </div>
 
       {filteredWants.length === 0 ? (
-        <Card className="p-8 text-center">
-          <div className="space-y-3">
-            <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center">
-              <Heart size={24} className="text-muted-foreground" />
+        <Card className="p-12 text-center">
+          <div className="space-y-6">
+            <div className="mx-auto w-16 h-16 rounded-full bg-muted flex items-center justify-center">
+              <Heart size={28} className="text-muted-foreground" />
             </div>
             <div>
-              <h3 className="text-base font-semibold mb-1">No wants found</h3>
-              <p className="text-sm text-muted-foreground mb-3">
+              <h3 className="text-lg font-medium mb-2">No wants found</h3>
+              <p className="text-base text-muted-foreground mb-6 leading-relaxed">
                 {searchQuery || categoryFilter !== 'all' || statusFilter !== 'all'
                   ? 'Try adjusting your filters'
                   : 'Start by adding something you desire'}
               </p>
               {!searchQuery && categoryFilter === 'all' && statusFilter === 'all' && (
-                <Button onClick={() => { resetForm(); setShowAddDialog(true) }} size="sm" className="bg-primary text-primary-foreground">
-                  <Plus size={18} className="mr-1.5" weight="bold" />
+                <Button onClick={() => { resetForm(); setShowAddDialog(true) }} size="lg" className="bg-primary text-primary-foreground px-8 py-6 text-base">
+                  <Plus size={22} className="mr-2" weight="bold" />
                   Add Your First Want
                 </Button>
               )}
@@ -449,53 +449,53 @@ export default function WantsPage() {
           </div>
         </Card>
       ) : view === 'grid' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredWants.map((want) => (
-            <Card key={want.id} className="p-4 hover:bg-muted/30 transition-all group relative cursor-pointer" onClick={() => handleWantClick(want)}>
-              <div className="space-y-2.5">
-                <div className="flex items-start justify-between gap-2">
+            <Card key={want.id} className="p-6 hover:bg-muted/30 transition-all group relative cursor-pointer" onClick={() => handleWantClick(want)}>
+              <div className="space-y-4">
+                <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-sm mb-0.5 truncate">{want.title}</h3>
-                    <p className="text-xs text-muted-foreground line-clamp-2">
+                    <h3 className="font-medium text-base mb-1.5 truncate leading-snug">{want.title}</h3>
+                    <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                       {want.description || 'No description'}
                     </p>
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-7 w-7 p-0 opacity-0 group-hover:opacity-100" onClick={(e) => e.stopPropagation()}>
-                        <DotsThree size={18} weight="bold" />
+                      <Button variant="ghost" size="sm" className="h-9 w-9 p-0 opacity-0 group-hover:opacity-100" onClick={(e) => e.stopPropagation()}>
+                        <DotsThree size={22} weight="bold" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleEdit(want) }}>
-                        <PencilSimple size={14} className="mr-2" />
+                        <PencilSimple size={16} className="mr-2" />
                         Edit
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleManageLinks(want) }}>
-                        <LinkIcon size={14} className="mr-2" />
+                        <LinkIcon size={16} className="mr-2" />
                         Manage Links
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDuplicate(want) }}>
-                        <Copy size={14} className="mr-2" />
+                        <Copy size={16} className="mr-2" />
                         Duplicate
                       </DropdownMenuItem>
                       {want.status !== 'completed' && (
                         <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleMarkComplete(want) }}>
-                          <CheckCircle size={14} className="mr-2" />
+                          <CheckCircle size={16} className="mr-2" />
                           Mark Complete
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDelete(want.id) }} className="text-destructive">
-                        <Trash size={14} className="mr-2" />
+                        <Trash size={16} className="mr-2" />
                         Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 text-xs">
-                  <span className={`px-2 py-0.5 rounded bg-muted ${getStatusColor(want.status)}`}>
+                <div className="flex flex-wrap gap-2 text-sm">
+                  <span className={`px-3 py-1 rounded bg-muted ${getStatusColor(want.status)}`}>
                     {WANT_STATUSES.find(s => s.value === want.status)?.label}
                   </span>
                   <span className={`px-2 py-0.5 rounded bg-muted ${getPriorityColor(want.priority)}`}>
