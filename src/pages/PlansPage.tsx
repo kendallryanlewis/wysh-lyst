@@ -508,12 +508,12 @@ export default function PlansPage() {
             </div>
             <div>
               <Label htmlFor="want">Link to Want (Optional)</Label>
-              <Select value={formData.wantId} onValueChange={(v) => setFormData({ ...formData, wantId: v })}>
+              <Select value={formData.wantId || undefined} onValueChange={(v) => setFormData({ ...formData, wantId: v === 'none' ? '' : v })}>
                 <SelectTrigger id="want">
                   <SelectValue placeholder="Select a want" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="none">None</SelectItem>
                   {wants.map(want => (
                     <SelectItem key={want.id} value={want.id}>{want.title}</SelectItem>
                   ))}
