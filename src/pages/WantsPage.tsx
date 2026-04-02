@@ -305,12 +305,43 @@ export default function WantsPage() {
     if (!managingLinksFor) return
 
     try {
+      const currentWantId = managingLinksFor.id
+      const previousLinkedIds = managingLinksFor.linkedItemIds || []
+      
       const updatedWant: WantItem = {
         ...managingLinksFor,
         linkedItemIds,
         updatedAt: new Date().toISOString(),
       }
       await db.putWant(updatedWant)
+
+      const addedLinks = linkedItemIds.filter(id => !previousLinkedIds.includes(id))
+      const removedLinks = previousLinkedIds.filter(id => !linkedItemIds.includes(id))
+
+      for (const linkedId of addedLinks) {
+        const linkedWant = wants.find(w => w.id === linkedId)
+        if (linkedWant) {
+          const updatedLinkedWant: WantItem = {
+            ...linkedWant,
+            linkedItemIds: [...(linkedWant.linkedItemIds || []), currentWantId].filter((id, index, self) => self.indexOf(id) === index),
+            updatedAt: new Date().toISOString(),
+          }
+          await db.putWant(updatedLinkedWant)
+        }
+      }
+
+      for (const unlinkedId of removedLinks) {
+        const unlinkedWant = wants.find(w => w.id === unlinkedId)
+        if (unlinkedWant) {
+          const updatedUnlinkedWant: WantItem = {
+            ...unlinkedWant,
+            linkedItemIds: (unlinkedWant.linkedItemIds || []).filter(id => id !== currentWantId),
+            updatedAt: new Date().toISOString(),
+          }
+          await db.putWant(updatedUnlinkedWant)
+        }
+      }
+
       await loadWants()
       toast.success('Links updated')
     } catch (error) {
