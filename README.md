@@ -1,23 +1,23 @@
-# ✨ Welcome to Your Spark Template!
-You've just launched your brand-new Spark Template Codespace — everything’s fired up and ready for you to explore, build, and create with Spark!
+# wysh-lyst
 
-This template is your blank canvas. It comes with a minimal setup to help you get started quickly with Spark development.
+This is a Vite + React app configured to deploy publicly with GitHub Pages.
 
-🚀 What's Inside?
-- A clean, minimal Spark environment
-- Pre-configured for local development
-- Ready to scale with your ideas
-  
-🧠 What Can You Do?
+## Public URL
 
-Right now, this is just a starting point — the perfect place to begin building and testing your Spark applications.
+After deployment is enabled, your app will be available at:
 
-🧹 Just Exploring?
-No problem! If you were just checking things out and don’t need to keep this code:
+https://kendallryanlewis.github.io/wysh-lyst/
 
-- Simply delete your Spark.
-- Everything will be cleaned up — no traces left behind.
+## How deployment works
 
-📄 License For Spark Template Resources 
+- A GitHub Actions workflow in `.github/workflows/deploy-pages.yml` runs on every push to `main`.
+- The workflow builds the app and publishes `dist/` to GitHub Pages.
+- `vite.config.ts` automatically sets the correct base path when running in GitHub Actions.
 
-The Spark Template files and resources from GitHub are licensed under the terms of the MIT license, Copyright GitHub, Inc.
+## One-time GitHub settings
+
+1. Open the repository settings in GitHub.
+2. Go to Pages.
+3. Under Build and deployment, set Source to GitHub Actions.
+
+After that, push to `main` and wait for the Deploy to GitHub Pages workflow to finish.
