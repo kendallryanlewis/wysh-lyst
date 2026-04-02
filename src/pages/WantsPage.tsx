@@ -435,22 +435,22 @@ export default function WantsPage() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleEdit(want)}>
+                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleEdit(want) }}>
                         <PencilSimple size={14} className="mr-2" />
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleDuplicate(want)}>
+                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDuplicate(want) }}>
                         <Copy size={14} className="mr-2" />
                         Duplicate
                       </DropdownMenuItem>
                       {want.status !== 'completed' && (
-                        <DropdownMenuItem onClick={() => handleMarkComplete(want)}>
+                        <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleMarkComplete(want) }}>
                           <CheckCircle size={14} className="mr-2" />
                           Mark Complete
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => handleDelete(want.id)} className="text-destructive">
+                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDelete(want.id) }} className="text-destructive">
                         <Trash size={14} className="mr-2" />
                         Delete
                       </DropdownMenuItem>
@@ -538,22 +538,22 @@ export default function WantsPage() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleEdit(want)}>
+                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleEdit(want) }}>
                         <PencilSimple size={16} className="mr-2" />
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleDuplicate(want)}>
+                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDuplicate(want) }}>
                         <Copy size={16} className="mr-2" />
                         Duplicate
                       </DropdownMenuItem>
                       {want.status !== 'completed' && (
-                        <DropdownMenuItem onClick={() => handleMarkComplete(want)}>
+                        <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleMarkComplete(want) }}>
                           <CheckCircle size={16} className="mr-2" />
                           Mark Complete
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => handleDelete(want.id)} className="text-destructive">
+                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDelete(want.id) }} className="text-destructive">
                         <Trash size={16} className="mr-2" />
                         Delete
                       </DropdownMenuItem>
