@@ -43,7 +43,7 @@ export default function HomePage({ onNavigate }: HomePageProps) {
   }
 
   return (
-    <div className="p-4 md:p-6 space-y-4 max-w-7xl pb-20 md:pb-6">
+    <div className="p-4 md:p-6 space-y-4 max-w-7xl pb-24 md:pb-6">
       <header className="space-y-1.5">
         <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
           Welcome to Your Future

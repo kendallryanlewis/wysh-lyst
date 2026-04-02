@@ -195,8 +195,8 @@ export default function AiPage() {
         </div>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 md:relative bg-background border-t md:border-t-0 border-border p-4 md:p-0 md:pt-6">
-        <div className="max-w-5xl mx-auto">
+      <div className="fixed bottom-0 left-0 right-0 md:relative bg-background border-t md:border-t-0 border-border p-4 md:p-0 md:pt-6" style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
+        <div className="max-w-5xl mx-auto mb-14 md:mb-0">
           <div className="flex gap-3">
             <Textarea
               value={input}

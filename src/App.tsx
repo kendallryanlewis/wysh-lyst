@@ -114,7 +114,7 @@ function App() {
         </main>
       </div>
 
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <div className="flex justify-around items-center h-14 px-2">
           {NAV_ITEMS.slice(0, 5).map((item) => {
             const Icon = item.icon
