@@ -459,7 +459,7 @@ export default function WantsPage() {
                 {want.estimatedCost && (
                   <p className="text-primary font-semibold text-lg">
                     {formatCurrency(want.estimatedCost)}
-                  </p>
+                </div>
                 )}
 
                 {(want.imageUrl || want.address || (want.links && want.links.length > 0)) && (
