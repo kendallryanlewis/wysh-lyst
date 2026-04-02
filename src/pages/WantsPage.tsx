@@ -35,6 +35,7 @@ import {
 } from '@/lib/utils-wants'
 import { handleImageUpload } from '@/lib/image-utils'
 import WantDetailDialog from '@/components/WantDetailDialog'
+import ManageLinksDialog from '@/components/ManageLinksDialog'
 
 export default function WantsPage() {
   const isMobile = useIsMobile()
@@ -51,6 +52,8 @@ export default function WantsPage() {
   const [uploadingImage, setUploadingImage] = useState(false)
   const [selectedWant, setSelectedWant] = useState<WantItem | null>(null)
   const [showDetailDialog, setShowDetailDialog] = useState(false)
+  const [managingLinksFor, setManagingLinksFor] = useState<WantItem | null>(null)
+  const [showManageLinksDialog, setShowManageLinksDialog] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [formData, setFormData] = useState({
@@ -293,6 +296,35 @@ export default function WantsPage() {
     setShowDetailDialog(true)
   }
 
+  const handleManageLinks = (want: WantItem) => {
+    setManagingLinksFor(want)
+    setShowManageLinksDialog(true)
+  }
+
+  const handleSaveLinks = async (linkedItemIds: string[]) => {
+    if (!managingLinksFor) return
+
+    try {
+      const updatedWant: WantItem = {
+        ...managingLinksFor,
+        linkedItemIds,
+        updatedAt: new Date().toISOString(),
+      }
+      await db.putWant(updatedWant)
+      await loadWants()
+      toast.success('Links updated')
+    } catch (error) {
+      toast.error('Failed to update links')
+    }
+  }
+
+  const handleLinkedItemClick = async (wantId: string) => {
+    const linkedWant = wants.find(w => w.id === wantId)
+    if (linkedWant) {
+      setSelectedWant(linkedWant)
+    }
+  }
+
   if (loading) {
     return (
       <div className="p-4 md:p-6 space-y-4">
@@ -439,6 +471,10 @@ export default function WantsPage() {
                         <PencilSimple size={14} className="mr-2" />
                         Edit
                       </DropdownMenuItem>
+                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleManageLinks(want) }}>
+                        <LinkIcon size={14} className="mr-2" />
+                        Manage Links
+                      </DropdownMenuItem>
                       <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDuplicate(want) }}>
                         <Copy size={14} className="mr-2" />
                         Duplicate
@@ -473,7 +509,7 @@ export default function WantsPage() {
                   </p>
                 )}
 
-                {(want.imageUrl || want.address || (want.links && want.links.length > 0)) && (
+                {(want.imageUrl || want.address || (want.links && want.links.length > 0) || (want.linkedItemIds && want.linkedItemIds.length > 0)) && (
                   <div className="flex flex-wrap gap-1.5 text-xs text-muted-foreground">
                     {want.imageUrl && (
                       <div className="flex items-center gap-1 px-1.5 py-0.5 bg-muted rounded">
@@ -491,6 +527,12 @@ export default function WantsPage() {
                       <div className="flex items-center gap-1 px-1.5 py-0.5 bg-muted rounded">
                         <LinkIcon size={10} />
                         <span>{want.links.length} link{want.links.length > 1 ? 's' : ''}</span>
+                      </div>
+                    )}
+                    {want.linkedItemIds && want.linkedItemIds.length > 0 && (
+                      <div className="flex items-center gap-1 px-1.5 py-0.5 bg-primary/10 rounded text-primary">
+                        <Heart size={10} weight="fill" />
+                        <span>{want.linkedItemIds.length} linked</span>
                       </div>
                     )}
                   </div>
@@ -538,22 +580,26 @@ export default function WantsPage() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleEdit(want) }}>
+                      <DropdownMenuItem onClick={() => handleEdit(want)}>
                         <PencilSimple size={16} className="mr-2" />
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDuplicate(want) }}>
+                      <DropdownMenuItem onClick={() => handleManageLinks(want)}>
+                        <LinkIcon size={16} className="mr-2" />
+                        Manage Links
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDuplicate(want)}>
                         <Copy size={16} className="mr-2" />
                         Duplicate
                       </DropdownMenuItem>
                       {want.status !== 'completed' && (
-                        <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleMarkComplete(want) }}>
+                        <DropdownMenuItem onClick={() => handleMarkComplete(want)}>
                           <CheckCircle size={16} className="mr-2" />
                           Mark Complete
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDelete(want.id) }} className="text-destructive">
+                      <DropdownMenuItem onClick={() => handleDelete(want.id)} className="text-destructive">
                         <Trash size={16} className="mr-2" />
                         Delete
                       </DropdownMenuItem>
@@ -1073,6 +1119,16 @@ export default function WantsPage() {
         want={selectedWant}
         open={showDetailDialog}
         onOpenChange={setShowDetailDialog}
+        linkedWants={selectedWant?.linkedItemIds?.map(id => wants.find(w => w.id === id)).filter((w): w is WantItem => w !== undefined) || []}
+        onLinkedItemClick={handleLinkedItemClick}
+      />
+
+      <ManageLinksDialog
+        want={managingLinksFor}
+        allWants={wants}
+        open={showManageLinksDialog}
+        onOpenChange={setShowManageLinksDialog}
+        onSave={handleSaveLinks}
       />
     </div>
   )

@@ -49,6 +49,7 @@ export interface WantItem {
   completedAt?: string
   archived: boolean
   isPinned?: boolean
+  linkedItemIds?: string[]
 }
 
 export interface PlanStep {

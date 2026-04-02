@@ -37,9 +37,11 @@ interface WantDetailDialogProps {
   want: WantItem | null
   open: boolean
   onOpenChange: (open: boolean) => void
+  linkedWants?: WantItem[]
+  onLinkedItemClick?: (wantId: string) => void
 }
 
-export default function WantDetailDialog({ want, open, onOpenChange }: WantDetailDialogProps) {
+export default function WantDetailDialog({ want, open, onOpenChange, linkedWants = [], onLinkedItemClick }: WantDetailDialogProps) {
   const isMobile = useIsMobile()
 
   if (!want) return null
@@ -352,6 +354,64 @@ export default function WantDetailDialog({ want, open, onOpenChange }: WantDetai
                   ))}
                 </div>
               </div>
+            )}
+
+            {linkedWants && linkedWants.length > 0 && (
+              <>
+                <Separator className="my-4" />
+                <div className="space-y-2 p-4 rounded bg-card border border-border">
+                  <div className="flex items-center gap-2">
+                    <div className="w-9 h-9 rounded bg-primary/10 flex items-center justify-center">
+                      <LinkIcon size={20} weight="bold" className="text-primary" />
+                    </div>
+                    <h2 className="text-base font-semibold">Linked Items</h2>
+                  </div>
+                  <div className="space-y-2 pl-11">
+                    {linkedWants.map((linkedWant) => {
+                      const linkedStatus = WANT_STATUSES.find(s => s.value === linkedWant.status)
+                      const linkedCategory = WANT_CATEGORIES.find(c => c.value === linkedWant.category)
+                      return (
+                        <button
+                          key={linkedWant.id}
+                          onClick={() => onLinkedItemClick?.(linkedWant.id)}
+                          className="w-full flex items-center gap-3 p-3 rounded hover:bg-muted transition-colors text-left group"
+                        >
+                          {linkedWant.imageUrl ? (
+                            <div className="w-12 h-12 rounded overflow-hidden flex-shrink-0 bg-muted">
+                              <img
+                                src={linkedWant.imageUrl}
+                                alt={linkedWant.title}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-12 h-12 rounded bg-muted flex items-center justify-center flex-shrink-0">
+                              <Heart size={20} className="text-muted-foreground" weight="fill" />
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-sm group-hover:text-primary transition-colors truncate">
+                              {linkedWant.title}
+                            </p>
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {linkedStatus && (
+                                <Badge variant="outline" className={`${linkedStatus.color} text-xs px-1.5 py-0`}>
+                                  {linkedStatus.label}
+                                </Badge>
+                              )}
+                              {linkedCategory && (
+                                <Badge variant="outline" className="text-xs px-1.5 py-0">
+                                  {linkedCategory.label}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              </>
             )}
 
             {(want.isPinned || want.archived) && (
