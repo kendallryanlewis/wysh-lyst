@@ -141,7 +141,7 @@ function App() {
             `}
           >
             <Gear size={24} weight={currentPage === 'settings' ? 'fill' : 'regular'} />
-            <span className="text-xs font-normal">More</span>
+            <span className="text-xs font-normal">Settings</span>
           </button>
         </div>
       </nav>
