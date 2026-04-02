@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react'
 import { db } from '@/lib/db'
-import { House, Heart, Eye, ListChecks, Sparkle, ClockCounterClockwise, Gear } from '@phosphor-icons/react'
+import { House, Heart, ListChecks, Sparkle, ClockCounterClockwise, Gear } from '@phosphor-icons/react'
 import HomePage from '@/pages/HomePage'
 import WantsPage from '@/pages/WantsPage'
-import VisionPage from '@/pages/VisionPage'
 import PlansPage from '@/pages/PlansPage'
 import AiPage from '@/pages/AiPage'
 import TimelinePage from '@/pages/TimelinePage'
 import SettingsPage from '@/pages/SettingsPage'
 
-type Page = 'home' | 'wants' | 'vision' | 'plans' | 'ai' | 'timeline' | 'settings'
+type Page = 'home' | 'wants' | 'plans' | 'ai' | 'timeline' | 'settings'
 
 const NAV_ITEMS = [
   { id: 'home' as Page, label: 'Home', icon: House },
   { id: 'wants' as Page, label: 'Wants', icon: Heart },
-  { id: 'vision' as Page, label: 'Vision', icon: Eye },
   { id: 'plans' as Page, label: 'Plans', icon: ListChecks },
   { id: 'ai' as Page, label: 'AI', icon: Sparkle },
   { id: 'timeline' as Page, label: 'Timeline', icon: ClockCounterClockwise },
@@ -88,7 +86,6 @@ function App() {
         <main className="flex-1 overflow-y-auto">
           {currentPage === 'home' && <HomePage onNavigate={setCurrentPage} />}
           {currentPage === 'wants' && <WantsPage />}
-          {currentPage === 'vision' && <VisionPage />}
           {currentPage === 'plans' && <PlansPage />}
           {currentPage === 'ai' && <AiPage />}
           {currentPage === 'timeline' && <TimelinePage />}

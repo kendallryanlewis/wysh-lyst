@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/card'
 import { formatCurrency, formatRelativeTime, calculateBudgetSnapshot } from '@/lib/utils-wants'
 
 interface HomePageProps {
-  onNavigate: (page: 'home' | 'wants' | 'vision' | 'plans' | 'ai' | 'timeline' | 'settings') => void
+  onNavigate: (page: 'home' | 'wants' | 'plans' | 'ai' | 'timeline' | 'settings') => void
 }
 
 export default function HomePage({ onNavigate }: HomePageProps) {
