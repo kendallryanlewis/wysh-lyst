@@ -1077,11 +1077,3 @@ export default function WantsPage() {
     </div>
   )
 }
-      <WantDetailDialog
-        want={selectedWant}
-        open={showDetailDialog}
-        onOpenChange={setShowDetailDialog}
-      />
-    </div>
-  )
-}
